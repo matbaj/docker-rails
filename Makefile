@@ -1,10 +1,13 @@
-IMAGE_NAME="container"
-APP_NAME='container_example'
-APP_REPO=https://github.com/matbaj/container_example.git
-ROOT_PASSWORD=password
-
-
+IMAGE_NAME="ruby_app"
+CONTAINER_NAME="test_app"
+PORT_OUT=3100
 all: image
 
 image:
-	cpp -x c -std=c90 -DAPP_NAME=$(APP_NAME) -DAPP_REPO=$(APP_REPO) -DROOT_PASSWORD=$(ROOT_PASSWORD) Dockerfile.in | docker build -t $(IMAGE_NAME) - 
+	docker build --rm -t $(IMAGE_NAME) .
+run:
+	docker run \
+	-p 127.0.0.1:$(PORT_OUT):3000 \
+	--hostname=$(CONTAINER_NAME) \
+	--name=$(CONTAINER_NAME) \
+	-d -t $(IMAGE_NAME)
